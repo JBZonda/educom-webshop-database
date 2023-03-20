@@ -44,6 +44,11 @@ function process_Request($page){
         case "logout":
             $data = logout_user($data);
             break;
+        case "change_password":
+            if (is_POST()){
+                $data = handle_form_change_password($data);
+            }
+            break;
     }
     return $data;
 }

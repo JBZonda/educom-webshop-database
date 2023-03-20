@@ -13,7 +13,7 @@ if (get_variable($data,"thanks")) {
     <p>Communicatievoorkeur: '; echo get_variable($data, "com_pref"); echo '.</div>';
 } else {
     echo '<div class="contact_form">
-        <form class="form_contact" method="post" action="\educom-webshop-basis/index.php">
+        <form class="form_contact" method="post" action="\educom-webshop-database/index.php">
         <div class="form_item">
         <label for="address">Aanhef:</label>
         <select id="address" name="address">

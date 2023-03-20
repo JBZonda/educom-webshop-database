@@ -64,6 +64,29 @@ function handle_form_register($data){
     }
 }
 
+function handle_form_change_password($data){
+    $fields = array("old_password", "password", "password_re");
+    $data = validate_input_fields($fields, $data);
+
+    if ($data["password"] != $data["password_re"]) {
+        $data["errors"]["password"] = "Herhaalde wachtwoord komt niet over een.";
+    }
+
+    if (is_valid($data)) {
+        $user_data = get_current_user_data();
+        if ($user_data["password"] == $data["old_password"]){
+            set_new_password($user_data["email"], $data["password"]);
+        } else {
+            $data["errors"]["old_password"] = "Wachtwoord is incorrect.";
+        }
+        
+        return $data;
+    } else {
+        return $data;
+    }
+}
+
+
 function handle_form_login($data){
     $fields = array("email", "password");
     $data = validate_input_fields($fields, $data);
@@ -89,6 +112,7 @@ function handle_form_login($data){
         return $data;
     }
 }
+
 
 function clean_and_check_input($variable_name, $data) {
     # give errors to the missing variables

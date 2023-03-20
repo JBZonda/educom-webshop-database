@@ -1,6 +1,6 @@
 <?php
 echo '<div class="register-login">
-<form class="form_login" method="post" action="\educom-webshop-basis/index.php">
+<form class="form_login" method="post" action="\educom-webshop-database/index.php">
 
 
 <label for="email">Email:</label><br>

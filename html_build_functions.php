@@ -22,17 +22,18 @@ function showBodyStart(){
 function showNavbar($data){
     echo '<div id="nav_bar">
     <ul>
-        <li> <a href="\educom-webshop-basis/index.php?page=home">Home</a></li>
-        <li> <a href="\educom-webshop-basis/index.php?page=about">About</a></li>
-        <li> <a href="\educom-webshop-basis/index.php?page=contact">Contact</a></li>';
+        <li> <a href="\educom-webshop-database/index.php?page=home">Home</a></li>
+        <li> <a href="\educom-webshop-database/index.php?page=about">About</a></li>
+        <li> <a href="\educom-webshop-database/index.php?page=contact">Contact</a></li>';
 
     #show a register and login or a loguit option depending on if the user is loged in
     if ($_SESSION["user_name"] == NULL){
-        echo '<li> <a href="\educom-webshop-basis/index.php?page=register">Registeer</a></li>
-        <li> <a href="\educom-webshop-basis/index.php?page=login">Login</a></li>';
+        echo '<li> <a href="\educom-webshop-database/index.php?page=register">Registeer</a></li>
+        <li> <a href="\educom-webshop-database/index.php?page=login">Login</a></li>';
     } else {
         echo
-        '<li><a href="\educom-webshop-basis/index.php?page=logout">Loguit '; echo $_SESSION["user_name"]; echo'</a></li>';
+        '<li><a href="\educom-webshop-database/index.php?page=logout">Loguit '; echo $_SESSION["user_name"]; echo'</a></li>
+        <li><a href="\educom-webshop-database/index.php?page=change_password">Wachtwoord veranderen</a></li>';
     }
     echo '</ul>
     </div>';

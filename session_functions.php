@@ -12,9 +12,15 @@ function login_user($email,$name){
     
 }
 
-function logout_user(){
-    session_unset();
-    session_initialize();
+function get_current_user_data() {
+    return get_user_data_from_email($_SESSION["user_email"]);
+}
+
+function logout_user($data){
+    $_SESSION["user_name"] = NULL;
+    $_SESSION["user_email"] = NULL;
+    $data["page"] = "home";
+    return $data;
 }
 
 ?>
