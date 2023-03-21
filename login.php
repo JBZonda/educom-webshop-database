@@ -2,7 +2,7 @@
 echo '<div class="register-login">
 <form class="form_login" method="post" action="\educom-webshop-database/index.php">
 
-
+<span class="error">'; echo get_variable($data,"errors","generic"); echo '</span><br>
 <label for="email">Email:</label><br>
 <input type="email" id="email" name="email" value="'; echo get_variable($data,"email"); echo '">
 <span class="error">'; echo get_variable($data,"errors","login"); echo'</span><br>

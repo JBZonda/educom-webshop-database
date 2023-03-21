@@ -24,13 +24,6 @@ function handle_form_contact($data){
     #check input and set errors is the errors array in $data
     $fields = array("address","name", "email", "phone_number", "comment","com_pref");
     $data = validate_input_fields($fields, $data);
-    /*
-    $data = validate_specific_response("address", clean_and_check_input("address",$data));
-    $data = validate_specific_response("name", clean_and_check_input("name", $data));
-    $data = validate_specific_response("email", clean_and_check_input("email", $data));
-    $data= validate_specific_response("phone_number", clean_and_check_input("phone_number", $data));
-    $data = validate_specific_response("comment", clean_and_check_input("comment", $data));
-    $data = validate_specific_response("com_pref", clean_and_check_input("com_pref", $data));*/
     
     if (is_valid($data)) {
         $thanks = TRUE;
@@ -50,6 +43,7 @@ function handle_form_register($data){
         $data["errors"]["password"] = "Herhaalde wachtwoord komt niet over een.";
     }
     if (is_valid($data)) {
+        try {
         if (!does_email_exist($data["email"])){
             save_user($data["email"],$data["name"],$data["password"]);
             $data["page"] = "login";
@@ -57,7 +51,11 @@ function handle_form_register($data){
             $data["errors"]["email"] = "Email is al in gebruik.";
             $data["page"] = "register";
         }
-        
+        } catch(Exception $e){
+            $data["errors"]["generic"] = "Er is een fout probeer het later nog eens.";
+            #echo $e;
+            var_dump($e);
+        }
         return $data;
     } else {
         return $data;
@@ -73,13 +71,16 @@ function handle_form_change_password($data){
     }
 
     if (is_valid($data)) {
+        try{
         $user_data = get_current_user_data();
         if ($user_data["password"] == $data["old_password"]){
             set_new_password($user_data["email"], $data["password"]);
         } else {
             $data["errors"]["old_password"] = "Wachtwoord is incorrect.";
         }
-        
+        } catch(Exception $e){
+            $data["errors"]["generic"] = "Er is een fout probeer het later nog eens.";
+        }
         return $data;
     } else {
         return $data;
@@ -92,7 +93,7 @@ function handle_form_login($data){
     $data = validate_input_fields($fields, $data);
 
     #check the login data, and login if correct
-
+    try{
     if (does_email_exist($data["email"])){
         $user_data = get_user_data_from_email($data["email"]);
         if ($data["password"] == $user_data["password"]){
@@ -103,7 +104,9 @@ function handle_form_login($data){
     } else {
         $data["errors"]["login"] = "Login is incorrect.";
     }
-
+    } catch(Exception $e){
+        $data["errors"]["generic"] = "Er is een fout probeer het later nog eens.";
+    }
     if (is_valid($data)) {
         $data["page"] = "home";
         return $data;

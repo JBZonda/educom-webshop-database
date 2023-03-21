@@ -15,6 +15,7 @@ if (get_variable($data,"thanks")) {
     echo '<div class="contact_form">
         <form class="form_contact" method="post" action="\educom-webshop-database/index.php">
         <div class="form_item">
+        <span class="error">'; echo get_variable($data,"errors","generic"); echo '</span><br>
         <label for="address">Aanhef:</label>
         <select id="address" name="address">
             <option value=""></option>

@@ -16,7 +16,9 @@ function disconnect_database($conn){
 function get_user_by_email($conn ,$email){
     $sql ="SELECT * FROM users WHERE email='". $email ."'";
     $result= mysqli_query($conn, $sql);
-    
+    if (!$result){
+        throw new Exception("get_user_by_email: query error:" . mysqli_error($conn) );
+    }
     if (mysqli_num_rows($result) > 0) {
         return $result;
     } else {
@@ -29,7 +31,7 @@ function save_user($email,$name,$password){
     $sql = "INSERT INTO users(email, name, password) VALUES ('" . $email . "', '" . $name . "', '" . $password . "')";
 
     if (!mysqli_query($conn, $sql)) {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        throw new Exception("get_user_by_email: query:". $sql . " error:" . mysqli_error($conn));
     }
 
     disconnect_database($conn);
@@ -38,45 +40,50 @@ function save_user($email,$name,$password){
 function does_email_exist($email){
     #check if email is already in use
     $conn = connect_database();
-    
-    $result = get_user_by_email($conn, $email);
-    if ($result != FALSE){
+    try{
+        $result = get_user_by_email($conn, $email);
+        if ($result != FALSE){
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    } finally {
         disconnect_database($conn);
-        return TRUE;
-    } else {
-        disconnect_database($conn);
-        return FALSE;
     }
+    
 }
 
 function get_user_data_from_email($email){
     $conn = connect_database();
     
-    $result = get_user_by_email($conn, $email);
-    if ($result != FALSE){
-        while($row = mysqli_fetch_assoc($result)){
-            $user_data["email"] = $row["email"];
-            $user_data["name"] = $row["name"];
-            $user_data["password"] = $row["password"];
+    try{
+        $result = get_user_by_email($conn, $email);
+        if (!$result){
+            throw new Exception("get_user_data_from_email: email not in database");
         }
-        
-        disconnect_database($conn);
+        $row = mysqli_fetch_assoc($result);
+        $user_data["email"] = $row["email"];
+        $user_data["name"] = $row["name"];
+        $user_data["password"] = $row["password"];
         return $user_data;
-    } else {
+    } finally {
         disconnect_database($conn);
-        return FALSE;
     }
+    
 }
 function set_new_password($email, $new_password){
     $conn = connect_database();
-    $sql ="UPDATE users SET password = '" .$new_password. "
-    ' WHERE email='". $email ."'";
-    $result= mysqli_query($conn, $sql);
+    $sql ="UPDATE users SET password = '" . $new_password . "' WHERE email='". $email ."'";
 
+    try{
+    $result= mysqli_query($conn, $sql);
     if (!mysqli_query($conn, $sql)) {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        throw new Exception("get_user_by_email: query:". $sql . " error:" . mysqli_error($conn));
     }
-    disconnect_database($conn);
+    } finally {
+        disconnect_database($conn);
+    }
+    
 }
 
 
