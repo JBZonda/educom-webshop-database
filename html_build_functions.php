@@ -24,7 +24,8 @@ function showNavbar($data){
     <ul>
         <li> <a href="\educom-webshop-database/index.php?page=home">Home</a></li>
         <li> <a href="\educom-webshop-database/index.php?page=about">About</a></li>
-        <li> <a href="\educom-webshop-database/index.php?page=contact">Contact</a></li>';
+        <li> <a href="\educom-webshop-database/index.php?page=contact">Contact</a></li>
+        <li> <a href="\educom-webshop-database/index.php?page=webshop">Webshop</a></li>';
 
     #show a register and login or a loguit option depending on if the user is loged in
     if ($_SESSION["user_name"] == NULL){

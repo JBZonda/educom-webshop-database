@@ -54,14 +54,14 @@ if (get_variable($data,"thanks")) {
         <p>Selecteer communicatievoorkeur:
         <span class="error">'; echo get_variable($data,"errors", "com_pref"); echo '</span></p>
         <input type="radio" id="cm_email" name="com_pref" value="Email"';
-        if (get_variable($data, "errors", "com_pref") == "Email") {
+        if (get_variable($data, "com_pref") == "Email") {
             echo 'checked="checked"';
         }
         echo '>
         <label for="">Email</label><br>
         <input type="radio" id="cm_phone" name="com_pref"  value="Telefoon" ';
         
-        if (get_variable($data, "errors", "com_pref") == "Telefoon") {
+        if (get_variable($data, "com_pref") == "Telefoon") {
             echo 'checked="checked"';
         }
         echo '>

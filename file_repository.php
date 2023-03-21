@@ -86,5 +86,29 @@ function set_new_password($email, $new_password){
     
 }
 
+function save_product($product){
+    $conn = connect_database();
+    $sql = "INSERT INTO products(name, discription, price, image_location) VALUES
+    ('" . $product->get_name()."','" . $product->get_discription() . "','" . $product->get_price() . "','" . $product->get_img_file(). "')";
+    try{
+    if (!mysqli_query($conn, $sql)) {
+        throw new Exception("save_product: query:". $sql. " error:". mysqli_error($conn));
+    }
+    } finally {
+        disconnect_database($conn);
+    }
+}
+
+function get_product_by_id($id){
+    $conn = connect_database();
+    $sql = "SELECT * FROM products WHERE id='$id'";
+    $result= mysqli_query($conn, $sql);
+    if (!$result){
+        throw new Exception("get_product_by_id: query error:". mysqli_error($conn));
+    }
+    $row = mysqli_fetch_assoc($result);
+    $product = new Product($row["id"], $row["name"], $row["discription"], $row ["image_location"], $row["price"]);
+    return $product;
+}
 
 ?>

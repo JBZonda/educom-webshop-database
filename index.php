@@ -49,6 +49,8 @@ function process_Request($page){
                 $data = handle_form_change_password($data);
             }
             break;
+        case "webshop":
+            break;
     }
     return $data;
 }
