@@ -26,7 +26,7 @@ function get_user_by_email($conn ,$email){
 
 function save_user($email,$name,$password){
     $conn = connect_database();
-    $sql = "INSERT INTO users VALUES ('" . $email . "', '" . $name . "', '" . $password . "')";
+    $sql = "INSERT INTO users(email, name, password) VALUES ('" . $email . "', '" . $name . "', '" . $password . "')";
 
     if (!mysqli_query($conn, $sql)) {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
