@@ -71,11 +71,7 @@ function process_Request($page){
     return $data;
 }
 function is_POST(){
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
+    return ($_SERVER["REQUEST_METHOD"] == "POST");
 }
 
 
