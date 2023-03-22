@@ -23,4 +23,8 @@ function logout_user($data){
     return $data;
 }
 
+function isUserLoggedIn(){
+    
+}
+
 ?>
