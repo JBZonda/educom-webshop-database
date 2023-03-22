@@ -29,24 +29,40 @@ function process_Request($page){
         case "contact":
             if (is_POST()){
                 $data = handle_form_contact($data);
+
+                $thanks = is_valid($data);
+                $data["thanks"] = $thanks;
             }
             break;
         case "register":
             if (is_POST()){
-                $data = handle_form_register($data);
+                $data = validate_form_register($data);
+                if (is_valid($data)){
+                    save_user($data["email"],$data["name"],$data["password"]);
+                    $data["page"] = "login";
+                }
             } 
             break;
         case "login":
             if (is_POST()){
-                $data = handle_form_login($data);
+                $data = validate_form_login($data);
+                if (is_valid($data)){
+                    login_user($data["email"],$data["name"]);
+                    $data["page"] = "home";
+                }
+
             }
+
             break;
         case "logout":
             $data = logout_user($data);
             break;
         case "change_password":
             if (is_POST()){
-                $data = handle_form_change_password($data);
+                $data = validate_form_change_password($data);
+                if (is_valid($data)) {
+                    set_new_password($data["email"], $data["password"]);
+                }
             }
             break;
         case "webshop":
