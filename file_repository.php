@@ -14,6 +14,7 @@ function disconnect_database($conn){
 }
 
 function get_user_by_email($conn ,$email){
+    $email = mysqli_real_escape_string($conn, $email);
     $sql ="SELECT * FROM users WHERE email='". $email ."'";
     $result= mysqli_query($conn, $sql);
     if (!$result){
@@ -25,6 +26,9 @@ function get_user_by_email($conn ,$email){
 
 function save_user($email,$name,$password){
     $conn = connect_database();
+    $email = mysqli_real_escape_string($conn, $email);
+    $name = mysqli_real_escape_string($conn, $name);
+    $password = mysqli_real_escape_string($conn, $password);
     $sql = "INSERT INTO users(email, name, password) VALUES ('" . $email . "', '" . $name . "', '" . $password . "')";
     try{
         if (!mysqli_query($conn, $sql)) {
@@ -66,6 +70,8 @@ function get_user_data_from_email($email){
 }
 function set_new_password($email, $new_password){
     $conn = connect_database();
+    $email = mysqli_real_escape_string($conn, $email);
+    $new_password = mysqli_real_escape_string($conn, $new_password);
     $sql ="UPDATE users SET password = '" . $new_password . "' WHERE email='". $email ."'";
 
     try{
@@ -81,8 +87,13 @@ function set_new_password($email, $new_password){
 
 function save_product($product){
     $conn = connect_database();
+    $name = mysqli_real_escape_string($conn, $product->get_name());
+    $discription = mysqli_real_escape_string($conn, $product->get_discription());
+    $price = mysqli_real_escape_string($conn, $product->get_price());
+    $img_location = mysqli_real_escape_string($conn, $product->get_img_location());
+
     $sql = "INSERT INTO products(name, discription, price, image_location) VALUES
-    ('" . $product->get_name()."','" . $product->get_discription() . "','" . $product->get_price() . "','" . $product->get_img_file(). "')";
+    ('" . $name ."','" . $discription . "','" . $price . "','" . $img_location . "')";
     try{
     if (!mysqli_query($conn, $sql)) {
         throw new Exception("save_product: query:". $sql. " error:". mysqli_error($conn));
