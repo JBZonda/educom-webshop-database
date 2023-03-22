@@ -12,6 +12,10 @@ function login_user($email,$name){
     
 }
 
+function get_current_user_name() {
+    return $_SESSION["user_name"];
+}
+
 function get_current_user_data() {
     return get_user_data_from_email($_SESSION["user_email"]);
 }
@@ -24,7 +28,7 @@ function logout_user($data){
 }
 
 function isUserLoggedIn(){
-    
+    return ($_SESSION["user_name"] != NULL);
 }
 
 ?>

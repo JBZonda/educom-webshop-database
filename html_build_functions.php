@@ -19,22 +19,25 @@ function showBodyStart(){
 
 }
 
-function showNavbar($data){
-    echo '<div id="nav_bar">
-    <ul>
-        <li> <a href="\educom-webshop-database/index.php?page=home">Home</a></li>
-        <li> <a href="\educom-webshop-database/index.php?page=about">About</a></li>
-        <li> <a href="\educom-webshop-database/index.php?page=contact">Contact</a></li>
-        <li> <a href="\educom-webshop-database/index.php?page=webshop">Webshop</a></li>';
+function showNavItem($link, $label){
+    echo '<li> <a href="\educom-webshop-database/index.php?page='. $link .'">' . $label . '</a></li>';
+}
 
+function showNavbar(){
+    echo '<div id="nav_bar">
+    <ul>';
+    showNavItem("home", "Home");
+    showNavItem("about", "About");
+    showNavItem("contact", "Contact");
+    showNavItem("webshop", "Webshop");
+    
     #show a register and login or a loguit option depending on if the user is loged in
     if (isUserLoggedIn()){
-        echo '<li> <a href="\educom-webshop-database/index.php?page=register">Registeer</a></li>
-        <li> <a href="\educom-webshop-database/index.php?page=login">Login</a></li>';
+        showNavItem("logout", "Loguit " . get_current_user_name());
+        showNavItem("change_password", "Wachtwoord veranderen");
     } else {
-        echo
-        '<li><a href="\educom-webshop-database/index.php?page=logout">Loguit '; echo $_SESSION["user_name"]; echo'</a></li>
-        <li><a href="\educom-webshop-database/index.php?page=change_password">Wachtwoord veranderen</a></li>';
+        showNavItem("register", "Registeer");
+        showNavItem("login", "Login");
     }
     echo '</ul>
     </div>';
@@ -70,7 +73,7 @@ function get_variable($data, $key, $key_array_in_array=NULL){
 
 function showBodySection($data){
     showBodyStart();
-    showNavbar($data);
+    showNavbar();
     showcontent($data);
     showFooter();
     showBodyEnd();

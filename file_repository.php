@@ -58,7 +58,7 @@ function get_user_data_from_email($email){
     try{
         $result = get_user_by_email($conn, $email);
         if (!$result){
-            throw new Exception("get_user_data_from_email: query:". $sql . " error:" . mysqli_error($conn));
+            throw new Exception("get_user_data_from_email: error:" . mysqli_error($conn));
         }
         $user_data = mysqli_fetch_assoc($result);
         return $user_data;
