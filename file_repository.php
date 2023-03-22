@@ -18,35 +18,30 @@ function get_user_by_email($conn ,$email){
     $result= mysqli_query($conn, $sql);
     if (!$result){
         throw new Exception("get_user_by_email: query error:" . mysqli_error($conn) );
-    }
-    if (mysqli_num_rows($result) > 0) {
-        return $result;
-    } else {
-        return FALSE;
-    }
+    }    
+    return $result;
+    
 }
 
 function save_user($email,$name,$password){
     $conn = connect_database();
     $sql = "INSERT INTO users(email, name, password) VALUES ('" . $email . "', '" . $name . "', '" . $password . "')";
-
-    if (!mysqli_query($conn, $sql)) {
-        throw new Exception("get_user_by_email: query:". $sql . " error:" . mysqli_error($conn));
+    try{
+        if (!mysqli_query($conn, $sql)) {
+            throw new Exception("save_user: query:". $sql . " error:" . mysqli_error($conn));
+        }
+    } finally{
+        disconnect_database($conn);
     }
-
-    disconnect_database($conn);
 }
 
 function does_email_exist($email){
-    #check if email is already in use
     $conn = connect_database();
     try{
         $result = get_user_by_email($conn, $email);
-        if ($result != FALSE){
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        $exists = mysqli_num_rows($result) > 0;
+        return $exists;
+        
     } finally {
         disconnect_database($conn);
     }
@@ -59,13 +54,11 @@ function get_user_data_from_email($email){
     try{
         $result = get_user_by_email($conn, $email);
         if (!$result){
-            throw new Exception("get_user_data_from_email: email not in database");
+            throw new Exception("get_user_data_from_email: query:". $sql . " error:" . mysqli_error($conn));
         }
-        $row = mysqli_fetch_assoc($result);
-        $user_data["email"] = $row["email"];
-        $user_data["name"] = $row["name"];
-        $user_data["password"] = $row["password"];
+        $user_data = mysqli_fetch_assoc($result);
         return $user_data;
+
     } finally {
         disconnect_database($conn);
     }
