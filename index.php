@@ -19,6 +19,19 @@ function getRequestedPage(){
     return $_GET["page"];
 }
 
+function make_menu($data) {
+    $menu = array("home" => "Home", "about" => "About", "contact" => "Contact", "webshop" => "Webshop");
+    if (isUserLoggedIn()){
+        $menu["logout"] = "Loguit " . get_current_user_name();
+        $menu["change_password"] = "Wachtwoord veranderen";
+    } else {
+        $menu["register"] =  "Registeer";
+        $menu["login"] = "Login";
+    }
+    $data["menu"] = $menu;
+    return $data;
+}
+
 function process_Request($page){
     $data = array("page"=>$page,"errors"=>array());
     switch ($page){
@@ -68,6 +81,8 @@ function process_Request($page){
         case "webshop":
             break;
     }
+
+    $data = make_menu($data);
     return $data;
 }
 function is_POST(){

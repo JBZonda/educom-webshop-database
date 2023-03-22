@@ -23,22 +23,16 @@ function showNavItem($link, $label){
     echo '<li> <a href="\educom-webshop-database/index.php?page='. $link .'">' . $label . '</a></li>';
 }
 
-function showNavbar(){
+function showNavbar($data){
     echo '<div id="nav_bar">
     <ul>';
-    showNavItem("home", "Home");
-    showNavItem("about", "About");
-    showNavItem("contact", "Contact");
-    showNavItem("webshop", "Webshop");
+    foreach($data['menu'] as $link => $label) {
+        showNavItem($link, $label);
+    }
+    
     
     #show a register and login or a loguit option depending on if the user is loged in
-    if (isUserLoggedIn()){
-        showNavItem("logout", "Loguit " . get_current_user_name());
-        showNavItem("change_password", "Wachtwoord veranderen");
-    } else {
-        showNavItem("register", "Registeer");
-        showNavItem("login", "Login");
-    }
+    
     echo '</ul>
     </div>';
 }
@@ -73,7 +67,7 @@ function get_variable($data, $key, $key_array_in_array=NULL){
 
 function showBodySection($data){
     showBodyStart();
-    showNavbar();
+    showNavbar($data);
     showcontent($data);
     showFooter();
     showBodyEnd();
