@@ -1,6 +1,6 @@
 <?php 
 include "html_build_functions.php";
-include "form_handle_functins.php";
+include "validate_form_functions.php";
 include "file_repository.php";
 include "session_functions.php";
 session_start();
