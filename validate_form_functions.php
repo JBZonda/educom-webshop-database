@@ -20,7 +20,7 @@ function is_valid($data){
     return $valid;
 }
 
-function handle_form_contact($data){
+function validate_form_contact($data){
     #check input and set errors is the errors array in $data
     $fields = array("address","name", "email", "phone_number", "comment","com_pref");
     $data = validate_input_fields($fields, $data);
@@ -119,6 +119,12 @@ function validate_specific_response($variable_name, $data) {
             return $data;
         }
     }
+    return $data;
+}
+
+function validate_add_to_cart($data){
+    $fields = array("id_in_cart", "place");
+    $data = validate_input_fields($fields, $data);
     return $data;
 }
 ?>

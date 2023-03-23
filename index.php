@@ -3,6 +3,7 @@ include "html_build_functions.php";
 include "validate_form_functions.php";
 include "file_repository.php";
 include "session_functions.php";
+include "classes.php";
 session_start();
 #create session variables on first load
 session_initialize();
@@ -13,7 +14,6 @@ $data = process_Request($page);
 showResponsePage($data);
 
 function getRequestedPage(){
-    #handle each form from the POST request
     if (is_POST()) { return $_POST['page'];}
     
     return $_GET["page"];
@@ -43,7 +43,7 @@ function process_Request($page){
             break;
         case "contact":
             if (is_POST()){
-                $data = handle_form_contact($data);
+                $data = validate_form_contact($data);
 
                 $thanks = is_valid($data);
                 $data["thanks"] = $thanks;
@@ -65,9 +65,7 @@ function process_Request($page){
                     login_user($data["email"],$data["name"]);
                     $data["page"] = "home";
                 }
-
             }
-
             break;
         case "logout":
             $data = logout_user($data);
@@ -81,13 +79,30 @@ function process_Request($page){
             }
             break;
         case "webshop":
-            try {
+            if (is_POST()){
+                $data = validate_add_to_cart($data);
+                if (is_valid($data)) {
+
+                    switch ($data["place"]){
+                        case "detail":
+                            $data["page"] = "shoppingcart";
+                            break;
+                        case "overview":
+                            $data["id"] = NULL;
+                            break;
+                    }
+                    add_to_cart($data["id"]);
+                    
+                }
+            } else if (array_key_exists("id", $_GET)) {
                 $data["id"] =  $_GET["id"];
-            } catch (Exception $e) {
+            } else {
                 $data["id"] = NULL;
             }
-            break;
 
+            break;
+        case "shoppingcart":
+            break;
         default:
             $data["page"] = "home";
             break;

@@ -4,6 +4,7 @@ function session_initialize(){
     if ($_SESSION == array()){
         $_SESSION["user_name"] = NULL;
         $_SESSION["user_email"] = NULL;
+        $_SESSION["cart"] = array();
     }
 }
 function login_user($email,$name){
@@ -31,4 +32,11 @@ function isUserLoggedIn(){
     return ($_SESSION["user_name"] != NULL);
 }
 
+function add_to_cart($product_id){
+    array_push($_SESSION["cart"], $product_id);
+}
+
+function get_cart(){
+    return $_SESSION["cart"];
+}
 ?>

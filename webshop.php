@@ -1,85 +1,57 @@
 <?php
-class Product {
-    public $id;
-    public $name;
-    public $price;
-    public $img_location;
-    public $discription;
 
-    function __construct($id, $name, $discription,  $img_location, $price){
-        $this->id = $id;
-        $this->img_location = $img_location;
-        $this->name = $name;
-        $this->price = $price;
-        $this->discription = $discription;
-    }
-    function get_id(){
-        return $this->id;
-    }
-    function get_name(){
-        return $this->name;
-    }
-    function get_price(){
-        return $this->price;
-    }
-    function get_image_location(){
-        return $this->img_location;
-    }
-    function get_discription(){
-        return $this->discription;
-    }
-    function set_name($name){
-        $this->name = $name;
-    }
-    function set_price($price){
-        $this->price = $price;
-    }
-    function set_img_file($img_location){
-        $this->img_location = $img_location;
-    }
-    function set_discription($discription){
-        $this->discription = $discription;
-    }
-    
+function add_to_cart_button($id, $place) {
+
+    echo '<div class="cart_button">
+    <form action="\educom-webshop-database/index.php" method="post">
+    <input type="hidden" name="page" value="webshop" />
+    <input type="hidden" name="id_in_cart" value="'.$id.'" />
+    <input type="hidden" name="place" value="'.$place.'" />
+    <input type="submit" value="Add to cart">
+    </form>
+    </div>
+    ';
 }
 
-function show_product_in_overview($id){
+function show_webshop($data, $id_array){
+    echo "<h1>Webshop</h1>";
     
-    $product = get_product_by_id($id);
+    foreach( $id_array as $id){
+        show_product_in_overview($data, $id);
+    }
+}
+
+function show_product_in_overview($product, $id){
+    
+    get_product_by_id($id);
     echo '<a class="product_link" href="\educom-webshop-database/index.php?page=webshop&id='. $id .'">
     <div class="product">
     <p >'. $product->get_name() . '</p>
     <img src="Images/'. $product->get_image_location().'" alt="image of '. $product->get_id() .'">
-    <p>Prijs:'. $product->get_price().'</p>
-    </div>
+    <p>Prijs:'. $product->get_price().'</p>';
+    add_to_cart_button($id, "detail");
+    echo '</div>
     </a>';
 }
 
-function show_product_in_detail($id){
+function show_product_in_detail($data, $id){
 
     $product = get_product_by_id($id);
     echo 
     '<div class="product">
     <h1>'. $product->get_name() . '</h1>
-    <img src="Images/'. $product->get_image_location().'" alt="image of '. $product->get_id() .'">
-    <p>Prijs:'. $product->get_price().'</p>
-    <p>Beschrijving:'. $product->get_discription().'</p>
+    <img src="Images/'. $product->get_image_location().'" alt="image of product id:  '. $product->get_id() .'">
+    <p>Prijs:'. $product->get_price().'</p>';
+    add_to_cart_button($id, $data, "detail");
+    echo '<p>Beschrijving:'. $product->get_discription().'</p>
     </div>';
 }
 
-
-function showcontent($data){
+function showcontent($data, $id_array = array(1,2,3,4,5)){
     if ($data["id"] != NULL) {
-        show_product_in_detail($data["id"]);
-
+        show_product_in_detail($data, $data["id"]);
     }   else {
-        echo "<h1>Webshop</h1>";
-        show_product_in_overview(1);
-        show_product_in_overview(2);
-        show_product_in_overview(3);
-        show_product_in_overview(4);
-        show_product_in_overview(5);
+        show_webshop($data, $id_array);
     }
 }
-
 ?>
