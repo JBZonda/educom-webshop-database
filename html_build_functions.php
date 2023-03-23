@@ -36,10 +36,11 @@ function showNavbar($data){
     echo '</ul>
     </div>';
 }
-function showcontent($data){
+function showcontent_page($data){
     $page = $data["page"];
     if (file_exists( $page . ".php")){
         include $page . ".php";
+        showcontent($data);
     }
     else {
         echo "<h1> deze pagina bestaat niet </h1>";
@@ -68,7 +69,7 @@ function get_variable($data, $key, $key_array_in_array=NULL){
 function showBodySection($data){
     showBodyStart();
     showNavbar($data);
-    showcontent($data);
+    showcontent_page($data);
     showFooter();
     showBodyEnd();
 }

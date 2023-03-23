@@ -1,5 +1,5 @@
 <?php
-
+function showcontent($data){
 echo '<div class="register-login">
 <form class="form_register" method="post" action="\educom-webshop-database/index.php">
 
@@ -22,7 +22,6 @@ echo '<div class="register-login">
 <input type="submit" value="Submit">
 </form>
 </div>
-
-
 ';
+}
 ?>

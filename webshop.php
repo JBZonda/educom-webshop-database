@@ -54,8 +54,9 @@ function show_product_in_overview($id){
     </a>';
 }
 
-echo "<h1>Webshop</h1>";
-show_product_in_overview(1);
-
+function showcontent($data){
+    echo "<h1>Webshop</h1>";
+    show_product_in_overview(1);
+}
 
 ?>
