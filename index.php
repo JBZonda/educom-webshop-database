@@ -24,6 +24,7 @@ function make_menu($data) {
     if (isUserLoggedIn()){
         $menu["logout"] = "Loguit " . get_current_user_name();
         $menu["change_password"] = "Wachtwoord veranderen";
+        $menu["shoppingcart"] = "Winkelwagen";
     } else {
         $menu["register"] =  "Registeer";
         $menu["login"] = "Login";
@@ -33,6 +34,7 @@ function make_menu($data) {
 }
 
 function process_Request($page){
+    $page = htmlspecialchars($page);
     $data = array("page"=>$page,"errors"=>array());
     switch ($page){
         case "home":
@@ -79,6 +81,15 @@ function process_Request($page){
             }
             break;
         case "webshop":
+            try {
+                $data["id"] =  $_GET["id"];
+            } catch (Exception $e) {
+                $data["id"] = NULL;
+            }
+            break;
+
+        default:
+            $data["page"] = "home";
             break;
     }
 

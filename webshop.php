@@ -46,7 +46,8 @@ class Product {
 function show_product_in_overview($id){
     
     $product = get_product_by_id($id);
-    echo '<a class="product" href="\educom-webshop-database/index.php?page=webshop&id='. $id .'"> <div class="product">
+    echo '<a class="product_link" href="\educom-webshop-database/index.php?page=webshop&id='. $id .'">
+    <div class="product">
     <p >'. $product->get_name() . '</p>
     <img src="Images/'. $product->get_image_location().'" alt="image of '. $product->get_id() .'">
     <p>Prijs:'. $product->get_price().'</p>
@@ -54,9 +55,31 @@ function show_product_in_overview($id){
     </a>';
 }
 
+function show_product_in_detail($id){
+
+    $product = get_product_by_id($id);
+    echo 
+    '<div class="product">
+    <h1>'. $product->get_name() . '</h1>
+    <img src="Images/'. $product->get_image_location().'" alt="image of '. $product->get_id() .'">
+    <p>Prijs:'. $product->get_price().'</p>
+    <p>Beschrijving:'. $product->get_discription().'</p>
+    </div>';
+}
+
+
 function showcontent($data){
-    echo "<h1>Webshop</h1>";
-    show_product_in_overview(1);
+    if ($data["id"] != NULL) {
+        show_product_in_detail($data["id"]);
+
+    }   else {
+        echo "<h1>Webshop</h1>";
+        show_product_in_overview(1);
+        show_product_in_overview(2);
+        show_product_in_overview(3);
+        show_product_in_overview(4);
+        show_product_in_overview(5);
+    }
 }
 
 ?>
