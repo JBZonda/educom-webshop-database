@@ -1,10 +1,11 @@
 <?php
+
 function show_order_button() {
 
     echo '<div class="order_button">
     <form action="\educom-webshop-database/index.php" method="post">
     <input type="hidden" name="page" value="shoppingcart" />
-    <input type="submit" value="KOOP">
+    <input type="submit" value="Afrekenen">
     </form>
     </div>
     ';

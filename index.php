@@ -70,7 +70,7 @@ function process_Request($page){
             if (is_POST()){
                 $data = validate_form_login($data);
                 if (is_valid($data)){
-                    login_user($data["email"],$data["name"]);
+                    login_user($data);
                     $data["page"] = "home";
                 }
             }
@@ -131,10 +131,19 @@ function process_Request($page){
             
             break;
         case "shoppingcart":
-            $product_ids = get_cart();
-            if ($product_ids != NULL) {
-                $data['products'] = get_products($product_ids);
-                $data['total_price'] = get_total_price($data['products']);
+            if (is_POST()){
+                $data["ordered_product_ids"] = get_cart();
+                empty_cart();
+                $data["time"] = time();
+                $data["user_id"] = get_user_id();
+                save_order($data);
+                $data["page"] = "home";
+            } else {
+                $product_ids = get_cart();
+                if ($product_ids != NULL) {
+                    $data['products'] = get_products($product_ids);
+                    $data['total_price'] = get_total_price($data['products']);
+                }
             }
             break;
         default:

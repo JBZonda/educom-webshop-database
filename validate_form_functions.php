@@ -81,6 +81,7 @@ function validate_form_login($data){
                 $data["errors"]["login"] = "Login is incorrect.";
             } else {
                 $data["name"] = $user_data["name"];
+                $data["id"] = $user_data["id"];
             }
         } catch(Exception $e){
             $data["errors"]["generic"] = "Er is een fout probeer het later nog eens.";
@@ -127,4 +128,5 @@ function validate_cart($data){
     $data = validate_input_fields($fields, $data);
     return $data;
 }
+
 ?>

@@ -140,4 +140,31 @@ function get_products($id_array){
     }
 }
 
+function save_order($data){
+    $user_id = $data["user_id"];
+    $time = $data["time"];
+    $product_ids = $data["ordered_product_ids"];
+    $sql = "INSERT INTO orders(user_id, time, product_id) VALUES ";
+    foreach ($product_ids as $product_id) {
+        if (substr($sql,-7) != "VALUES "){
+            $sql = $sql . " , ";
+        }
+        $sql = $sql . "('" . $user_id ."','" . $time . "','" . $product_id . "')";
+    }
+
+    echo $sql;
+    $conn = connect_database();
+    try {
+        $result= mysqli_query($conn, $sql);
+        if (!$result){
+            throw new Exception("save_order: query error:". mysqli_error($conn));
+        }
+    } finally {
+        disconnect_database($conn);
+    }
+
+
+}
+
+
 ?>

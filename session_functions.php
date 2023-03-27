@@ -2,16 +2,22 @@
 
 function session_initialize(){
     if ($_SESSION == array()){
+        $_SESSION["user_id"] = NULL;
         $_SESSION["user_name"] = NULL;
         $_SESSION["user_email"] = NULL;
         $_SESSION["cart"] = array();
     }
 }
-function login_user($email,$name){
-    $_SESSION["user_email"] = $email;
-    $_SESSION["user_name"] = $name;
+function login_user($data){
+    $_SESSION["user_id"] = $data["id"];
+    $_SESSION["user_email"] = $data["email"];
+    $_SESSION["user_name"] = $data["name"];
     $_SESSION["cart"] = array();
     
+}
+
+function get_user_id(){
+    return $_SESSION["user_id"];
 }
 
 function get_current_user_name() {
@@ -45,5 +51,9 @@ function remove_from_cart($product_id){
 
 function get_cart(){
     return $_SESSION["cart"];
+}
+
+function empty_cart(){
+    $_SESSION["cart"] = array();
 }
 ?>
