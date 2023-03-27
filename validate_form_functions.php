@@ -122,8 +122,8 @@ function validate_specific_response($variable_name, $data) {
     return $data;
 }
 
-function validate_add_to_cart($data){
-    $fields = array("id_in_cart", "place");
+function validate_cart($data){
+    $fields = array("id_in_cart", "place", "action");
     $data = validate_input_fields($fields, $data);
     return $data;
 }

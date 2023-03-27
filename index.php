@@ -19,6 +19,14 @@ function getRequestedPage(){
     return $_GET["page"];
 }
 
+function get_total_price($products){
+    $total_price = 0;
+    foreach ($products as $product){
+        $total_price += $product->get_price();
+    }
+    return $total_price;
+}
+
 function make_menu($data) {
     $menu = array("home" => "Home", "about" => "About", "contact" => "Contact", "webshop" => "Webshop");
     if (isUserLoggedIn()){
@@ -80,28 +88,54 @@ function process_Request($page){
             break;
         case "webshop":
             if (is_POST()){
-                $data = validate_add_to_cart($data);
+                $data = validate_cart($data);
                 if (is_valid($data)) {
+                    switch ($data["action"]){
+                        case "add":
+                            add_to_cart($data["id_in_cart"]);
+                            break;
+                        case "remove":
+                            remove_from_cart($data["id_in_cart"]);
+                            break;
+                    }
 
                     switch ($data["place"]){
                         case "detail":
                             $data["page"] = "shoppingcart";
+                            $product_ids = get_cart();
+                            if ($product_ids != NULL) {
+                                $data['products'] = get_products($product_ids);
+                                $data['total_price'] = get_total_price($data['products']);
+                                
+                            }
                             break;
                         case "overview":
                             $data["id"] = NULL;
+                            $product_ids = array(1,2,3,4,5);
+                            $data['products'] = get_products($product_ids);
                             break;
                     }
-                    add_to_cart($data["id"]);
-                    
-                }
+                                              
+                }               
             } else if (array_key_exists("id", $_GET)) {
                 $data["id"] =  $_GET["id"];
+                $product_ids = array($data["id"]);
+                $data['products'] = get_products($product_ids);
             } else {
                 $data["id"] = NULL;
+                $product_ids = array(1,2,3,4,5);
+                $data['products'] = get_products($product_ids);
             }
-
+            
+                
+            
             break;
         case "shoppingcart":
+            $product_ids = get_cart();
+            if ($product_ids != NULL) {
+                $data['products'] = get_products($product_ids);
+                $data['total_price'] = get_total_price($data['products']);
+            }
             break;
         default:
             $data["page"] = "home";
@@ -111,6 +145,7 @@ function process_Request($page){
     $data = make_menu($data);
     return $data;
 }
+
 function is_POST(){
     return ($_SERVER["REQUEST_METHOD"] == "POST");
 }

@@ -119,3 +119,22 @@ footer {
 .product p {
     padding: 5px;
 }
+
+/*cart styling*/
+.cart_price {
+    text-align: right;
+    float: right;
+}
+
+.total_price_cart {
+    text-align: right;
+    border-top: dashed;
+    border-color: green;
+    width: 800px;
+}
+.total_price_cart total_price_value{ 
+    float: right;
+}
+.order_button {
+    width: 800px;
+}

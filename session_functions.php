@@ -10,6 +10,7 @@ function session_initialize(){
 function login_user($email,$name){
     $_SESSION["user_email"] = $email;
     $_SESSION["user_name"] = $name;
+    $_SESSION["cart"] = array();
     
 }
 
@@ -22,8 +23,8 @@ function get_current_user_data() {
 }
 
 function logout_user($data){
-    $_SESSION["user_name"] = NULL;
-    $_SESSION["user_email"] = NULL;
+    session_unset();
+    session_initialize();
     $data["page"] = "home";
     return $data;
 }
@@ -34,6 +35,12 @@ function isUserLoggedIn(){
 
 function add_to_cart($product_id){
     array_push($_SESSION["cart"], $product_id);
+}
+
+function remove_from_cart($product_id){
+    if (($key = array_search($product_id, $_SESSION["cart"])) !== false) {
+        unset($_SESSION["cart"][$key]);
+    }
 }
 
 function get_cart(){

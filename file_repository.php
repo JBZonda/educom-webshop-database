@@ -114,5 +114,30 @@ function get_product_by_id($id){
     $product = new Product($row["id"], $row["name"], $row["discription"], $row ["image_location"], $row["price"]);
     return $product;
 }
+function get_products($id_array){
+    $sql = "SELECT * FROM products WHERE";
+    foreach($id_array as $key => $id) {
+        if (substr($sql,-5) == "WHERE"){
+            $sql = $sql .  ' id=' . $id;
+        } else {
+            $sql = $sql . ' OR id=' . $id;
+        }
+    }
+    $conn = connect_database();
+    try {
+        $result= mysqli_query($conn, $sql);
+        if (!$result){
+            throw new Exception("get_product_by_id: query error:". mysqli_error($conn));
+        }
+        $products = array();
+        while ($row = mysqli_fetch_assoc($result)){
+            $product = new Product($row["id"], $row["name"], $row["discription"], $row ["image_location"], $row["price"]);
+            array_push($products, $product);
+        }
+        return  $products;
+    } finally {
+        disconnect_database($conn);
+    }
+}
 
 ?>
