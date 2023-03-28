@@ -1,5 +1,5 @@
 <?php
-function showcontent($data) {
+function show_content($data) {
     echo '<div class="register-login">
     <form class="form_register" method="post" action="\educom-webshop-database/index.php">
 

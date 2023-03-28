@@ -1,5 +1,5 @@
 <?php 
-function showcontent($data) {
+function show_content($data) {
     echo '<div class="main_content">
     <h1>Over Jeroen van der Borgh</h1>
     <p>Ik ben 23 jaar oud en woon in Blaricum. Ik heb een hond, een kat en 3 kippen.</p>

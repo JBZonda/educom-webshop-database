@@ -19,7 +19,7 @@ function show_total_price($data){
     ;
 }
 
-function showcontent($data) {
+function show_content($data) {
 
     
     echo '<div class="shoppingcart">

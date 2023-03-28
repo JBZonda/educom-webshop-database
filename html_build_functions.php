@@ -1,33 +1,33 @@
 <?php
-function showHTMLstart(){
+function show_HTML_start(){
     echo '<!DOCTYPE html>
     <html lang="en">';
 }
 
-function showHTMLend(){
+function show_HTML_end(){
     echo "</html>";
 }
-function showHeadSection(){
+function show_head_section(){
     echo '<head>
     <title>Home</title>
     <link rel="stylesheet" href="CSS/stylesheet.css">
     </head>';
 }
 
-function showBodyStart(){
+function show_body_start(){
     echo '<body class="standard_body">';
 
 }
 
-function showNavItem($link, $label){
+function show_nav_item($link, $label){
     echo '<li> <a href="\educom-webshop-database/index.php?page='. $link .'">' . $label . '</a></li>';
 }
 
-function showNavbar($data){
+function show_nav_bar($data){
     echo '<div id="nav_bar">
     <ul>';
     foreach($data['menu'] as $link => $label) {
-        showNavItem($link, $label);
+        show_nav_item($link, $label);
     }
     
     
@@ -40,20 +40,20 @@ function showcontent_page($data){
     $page = $data["page"];
     if (file_exists( $page . ".php")){
         include $page . ".php";
-        showcontent($data);
+        show_content($data);
     }
     else {
         echo "<h1> deze pagina bestaat niet </h1>";
     }
 }
 
-function showFooter(){
+function show_footer(){
     echo '<footer  class="standard_footer"> 
     <p>&copy;2023 Autheur: Jeroen van der Borgh</p>
     </footer>';
 }
 
-function showBodyEnd(){
+function show_body_end(){
     echo "</body>";
 }
 
@@ -66,18 +66,18 @@ function get_variable($data, $key, $key_array_in_array=NULL){
     return $value;
 }
 
-function showBodySection($data){
-    showBodyStart();
-    showNavbar($data);
+function show_body_section($data){
+    show_body_start();
+    show_nav_bar($data);
     showcontent_page($data);
-    showFooter();
-    showBodyEnd();
+    show_footer();
+    show_body_end();
 }
 
 function showResponsePage($data){
-    showHTMLstart();
-    showHeadSection();
-    showBodySection($data);
-    showHTMLend();
+    show_HTML_start();
+    show_head_section();
+    show_body_section($data);
+    show_HTML_end();
 }
 ?>

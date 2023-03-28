@@ -69,7 +69,7 @@ function show_product_in_detail($data){
     </div>';
 }
 
-function showcontent($data){
+function show_content($data){
     if ($data["id"] != NULL) {
         show_product_in_detail($data);
     }   else {

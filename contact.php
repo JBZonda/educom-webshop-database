@@ -1,5 +1,5 @@
 <?php
-function showcontent($data){
+function show_content($data){
     if (get_variable($data,"thanks")) {
         var_dump($data);
         echo '<div class="thanks_message">
