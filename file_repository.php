@@ -144,27 +144,45 @@ function save_order($data){
     $user_id = $data["user_id"];
     $time = $data["time"];
     $product_ids = $data["ordered_product_ids"];
-    $sql = "INSERT INTO orders(user_id, time, product_id) VALUES ";
-    foreach ($product_ids as $product_id) {
-        if (substr($sql,-7) != "VALUES "){
-            $sql = $sql . " , ";
-        }
-        $sql = $sql . "('" . $user_id ."','" . $time . "','" . $product_id . "')";
-    }
 
-    echo $sql;
-    $conn = connect_database();
+
     try {
+
+        $conn = connect_database();
+
+
+        $sql = "INSERT INTO orders(user_id, time) VALUES ( ".$user_id.",". $time .")";
+        echo $sql . "<br>";
         $result= mysqli_query($conn, $sql);
         if (!$result){
             throw new Exception("save_order: query error:". mysqli_error($conn));
         }
-    } finally {
+
+        $last_id = mysqli_insert_id($conn);
+        $sql = "INSERT INTO order_line(product_id, order_id) VALUES ";
+
+        foreach ($product_ids as $product_id) {
+            if (substr($sql,-7) != "VALUES "){
+                $sql = $sql . " , ";
+            }
+            $sql = $sql . "('" . $product_id  ."','" . $last_id . "')";
+        }
+        echo $sql;
+
+        $result= mysqli_query($conn, $sql);
+        if (!$result){
+            echo "save_order: query error:". mysqli_error($conn);
+            throw new Exception("save_order: query error:". mysqli_error($conn));
+        }
+        
+    } catch(Exception $e) {
+        mysqli_rollback($conn);
+        throw new Exception("save_order: error:". mysqli_error($conn));
+
+    } 
+    finally {
         disconnect_database($conn);
     }
-
-
 }
-
 
 ?>
