@@ -13,6 +13,7 @@ function show_contact_thanks($data){
 
 function show_contact_form($data){
     show_form_start("contact_form","form_contact", $data);
+    show_form_field("address","Aanhef:","select", $data, "address", array("","Dhr.","Mvr.","..."));
     show_form_field("name", "Naam:", "text", $data, "name");
     show_form_field("email", "Email:", "email", $data, "email");
     show_form_field("phone_number", "Telefoonnummer:", "text", $data, "phone_number");

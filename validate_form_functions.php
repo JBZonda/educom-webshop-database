@@ -124,7 +124,7 @@ function validate_specific_response($variable_name, $data) {
 }
 
 function validate_cart($data){
-    $fields = array("id_in_cart", "place", "action");
+    $fields = array("id_in_cart", "place", "action", "amount");
     $data = validate_input_fields($fields, $data);
     return $data;
 }

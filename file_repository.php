@@ -151,7 +151,7 @@ function save_order($data){
         $conn = connect_database();
 
 
-        $sql = "INSERT INTO orders(user_id, time) VALUES ( ".$user_id.",". $time .")";
+        $sql = "INSERT INTO orders(user_id, time) VALUES ( ".$user_id.",'". $time ."')";
         echo $sql . "<br>";
         $result= mysqli_query($conn, $sql);
         if (!$result){
@@ -159,13 +159,13 @@ function save_order($data){
         }
 
         $last_id = mysqli_insert_id($conn);
-        $sql = "INSERT INTO order_line(product_id, order_id) VALUES ";
+        $sql = "INSERT INTO order_line(product_id, order_id, amount) VALUES ";
 
         foreach ($product_ids as $product_id) {
             if (substr($sql,-7) != "VALUES "){
                 $sql = $sql . " , ";
             }
-            $sql = $sql . "('" . $product_id  ."','" . $last_id . "')";
+            $sql = $sql . "('" . $product_id  ."','" . $last_id . "','" . $data["order"][$product_id] . "')";
         }
         echo $sql;
 

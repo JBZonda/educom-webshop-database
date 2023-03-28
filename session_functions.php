@@ -39,8 +39,8 @@ function isUserLoggedIn(){
     return ($_SESSION["user_name"] != NULL);
 }
 
-function add_to_cart($product_id){
-    array_push($_SESSION["cart"], $product_id);
+function add_to_cart($product_id, $amount){
+    $_SESSION["cart"][$product_id] = $amount;
 }
 
 function remove_from_cart($product_id){
@@ -51,6 +51,10 @@ function remove_from_cart($product_id){
 
 function get_cart(){
     return $_SESSION["cart"];
+}
+
+function get_product_id_from_cart(){
+    return  array_keys($_SESSION["cart"]);
 }
 
 function empty_cart(){

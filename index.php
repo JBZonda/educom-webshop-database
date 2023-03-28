@@ -92,21 +92,20 @@ function process_Request($page){
                 if (is_valid($data)) {
                     switch ($data["action"]){
                         case "add":
-                            add_to_cart($data["id_in_cart"]);
+                            add_to_cart($data["id_in_cart"], $data["amount"]);
                             break;
                         case "remove":
-                            remove_from_cart($data["id_in_cart"]);
+                            remove_from_cart($data["id_in_cart"]);	
                             break;
                     }
 
                     switch ($data["place"]){
                         case "detail":
                             $data["page"] = "shoppingcart";
-                            $product_ids = get_cart();
+                            $product_ids = get_product_id_from_cart();
                             if ($product_ids != NULL) {
                                 $data['products'] = get_products($product_ids);
                                 $data['total_price'] = get_total_price($data['products']);
-                                
                             }
                             break;
                         case "overview":
@@ -132,15 +131,19 @@ function process_Request($page){
             break;
         case "shoppingcart":
             if (is_POST()){
-                $data["ordered_product_ids"] = get_cart();
+                $data["order"] = get_cart();
+                $data["ordered_product_ids"] = get_product_id_from_cart();
                 empty_cart();
-                $data["time"] = time();
+                
+                $data["time"] = date("Y-m-d");
                 $data["user_id"] = get_user_id();
                 save_order($data);
                 $data["page"] = "home";
             } else {
-                $product_ids = get_cart();
+                $order = get_cart();
+                $product_ids = array_keys(get_cart());
                 if ($product_ids != NULL) {
+                    $data["order"] = $order;
                     $data['products'] = get_products($product_ids);
                     $data['total_price'] = get_total_price($data['products']);
                 }

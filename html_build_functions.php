@@ -65,15 +65,15 @@ function show_form_start($div_class, $form_class, $data){
 }
 function show_form_field($field_name, $label, $type, $data, $error_name, $options=NULL){
     	
-    echo '<label for="name">'.$label.'</label><br>';
+    echo '<label>'.$label.'</label>';
     switch($type){
         case "textarea":
             echo
-            '<textarea id="'.$field_name.'" name="'.$field_name.'">'; echo get_variable($data,$field_name); echo '</textarea>
+            '<br><textarea id="'.$field_name.'" name="'.$field_name.'">'; echo get_variable($data,$field_name); echo '</textarea>
             <span class="error">'; echo get_variable($data,"errors", $error_name); echo '</span><br>';
             break;
         case "radio":
-            echo '<span class="error">'; echo get_variable($data,"errors",  $error_name); 
+            echo '<br><span class="error">'; echo get_variable($data,"errors",  $error_name); 
             
             echo '</span><br>';
             foreach ($options as $option) {
@@ -84,9 +84,21 @@ function show_form_field($field_name, $label, $type, $data, $error_name, $option
                 echo '><label for="">'.$option.'</label><br>';
             }
             break;
+        case "select":
+            echo '<span class="error">'; echo get_variable($data,"errors",$error_name); echo'</span><br><br>
+            <select id="'.$field_name.'" name="'.$field_name.'">';
+            
+            foreach ($options as $option) {
+                echo '<option value="'.$option.'"';
 
+                if (get_variable($data,"address") == "'.$option.'"){
+                    echo ' selected="selected"';}
+                echo'>'.$option.'</option>';
+            }
+            echo '</select><br><br>';
+            break;
         default:
-            echo '<input type="'.$type.'" name="'.$field_name.'" value="'; echo get_variable($data,$field_name); echo '">
+            echo '<br><input type="'.$type.'" name="'.$field_name.'" value="'; echo get_variable($data,$field_name); echo '">
             <span class="error">'; echo get_variable($data,"errors",$error_name); echo'</span><br><br>';
     }
 }

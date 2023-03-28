@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2023 at 04:45 PM
+-- Generation Time: Mar 28, 2023 at 04:44 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -30,20 +30,46 @@ SET time_zone = "+00:00";
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `time` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL
+  `time` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `time`, `product_id`) VALUES
-(1, 2, 1679915687, 1),
-(2, 2, 1679915687, 2),
-(3, 2, 1679916273, 1),
-(4, 2, 1679916273, 2),
-(5, 2, 1679916273, 4);
+INSERT INTO `orders` (`id`, `user_id`, `time`) VALUES
+(5, 2, '2023-03-02'),
+(6, 2, '2023-03-08'),
+(10, 2, '2023-03-28'),
+(11, 2, '2023-03-28');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_line`
+--
+
+CREATE TABLE `order_line` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_line`
+--
+
+INSERT INTO `order_line` (`id`, `product_id`, `order_id`, `amount`) VALUES
+(4, 1, 5, 1),
+(5, 4, 5, 0),
+(6, 5, 5, 0),
+(7, 4, 6, 0),
+(8, 5, 6, 0),
+(13, 1, 10, 1),
+(14, 5, 10, 2),
+(15, 2, 10, 1),
+(16, 1, 11, 5);
 
 -- --------------------------------------------------------
 
@@ -102,6 +128,12 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `order_line`
+--
+ALTER TABLE `order_line`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -121,7 +153,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `order_line`
+--
+ALTER TABLE `order_line`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `products`
