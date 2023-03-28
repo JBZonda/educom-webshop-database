@@ -57,6 +57,49 @@ function show_body_end(){
     echo "</body>";
 }
 
+/* show form functions*/
+function show_form_start($div_class, $form_class, $data){
+    echo '<div class="'.$div_class.'">
+    <form class="'.$form_class.'" method="post" action="\educom-webshop-database/index.php">
+    <span class="error">'; echo get_variable($data,"errors","generic"); echo '</span><br>';
+}
+function show_form_field($field_name, $label, $type, $data, $error_name, $options=NULL){
+    	
+    echo '<label for="name">'.$label.'</label><br>';
+    switch($type){
+        case "textarea":
+            echo
+            '<textarea id="'.$field_name.'" name="'.$field_name.'">'; echo get_variable($data,$field_name); echo '</textarea>
+            <span class="error">'; echo get_variable($data,"errors", $error_name); echo '</span><br>';
+            break;
+        case "radio":
+            echo '<span class="error">'; echo get_variable($data,"errors",  $error_name); 
+            
+            echo '</span><br>';
+            foreach ($options as $option) {
+                echo '<input type="radio" name="'.$field_name.'" value="'.$option.'"';
+                if (get_variable($data, "com_pref") == $option) {
+                    echo 'checked="checked"';
+                }
+                echo '><label for="">'.$option.'</label><br>';
+            }
+            break;
+
+        default:
+            echo '<input type="'.$type.'" name="'.$field_name.'" value="'; echo get_variable($data,$field_name); echo '">
+            <span class="error">'; echo get_variable($data,"errors",$error_name); echo'</span><br><br>';
+    }
+}
+
+function show_form_end($submit_text,$page){
+    echo
+    '<input type="hidden" name="page" value="'.$page.'"><br>
+    <input type="submit" value="'.$submit_text.'">
+    </form>
+    </div>
+    ';
+}
+/*---------------------------------------------------*/
 function get_variable($data, $key, $key_array_in_array=NULL){
     if ($key_array_in_array != NULL){
         $value = isset($data[$key][$key_array_in_array]) ? $data[$key][$key_array_in_array] : "";
