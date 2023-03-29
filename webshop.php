@@ -1,35 +1,5 @@
 <?php
 
-function cart_button($id, $place, $action, $data) {
-
-       
-     
-    echo '<div class="cart_button">
-    <form action="\educom-webshop-database/index.php" method="post">
-    <input type="hidden" name="page" value="webshop" />
-    <input type="hidden" name="id_in_cart" value="'.$id.'" />
-    <input type="hidden" name="place" value="'.$place.'" />
-    <input type="hidden" name="action" value="'. $action .'" />';
-
-    switch  ($action) {
-        case 'add':
-            show_form_field("amount","Amount:","select", $data, "amount", array(1,2,3,4,5,6,7,8,9));
-            $submit_value = "Add to cart";
-            break;
-        case 'remove':
-            $submit_value = "Remove from cart";
-            break;
-    } 
-
-    echo'
-    <input type="submit" value="'. $submit_value .'">
-    </form>
-    </div>
-    ';
-}
-
-
-
 function show_webshop($data){
     echo "<h1>Webshop</h1>";
     

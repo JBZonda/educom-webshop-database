@@ -103,31 +103,12 @@ function save_product($product){
     }
 }
 
-function get_product_by_id($id){
-    $conn = connect_database();
-    $sql = "SELECT * FROM products WHERE id='$id'";
-    $result= mysqli_query($conn, $sql);
-    if (!$result){
-        throw new Exception("get_product_by_id: query error:". mysqli_error($conn));
-    }
-    $row = mysqli_fetch_assoc($result);
-    $product = new Product($row["id"], $row["name"], $row["discription"], $row ["image_location"], $row["price"]);
-    return $product;
-}
-function get_products($id_array){
-    $sql = "SELECT * FROM products WHERE";
-    foreach($id_array as $key => $id) {
-        if (substr($sql,-5) == "WHERE"){
-            $sql = $sql .  ' id=' . $id;
-        } else {
-            $sql = $sql . ' OR id=' . $id;
-        }
-    }
+function get_products($sql){
     $conn = connect_database();
     try {
         $result= mysqli_query($conn, $sql);
         if (!$result){
-            throw new Exception("get_product_by_id: query error:". mysqli_error($conn));
+            throw new Exception("get_products: query error:". mysqli_error($conn));
         }
         $products = array();
         while ($row = mysqli_fetch_assoc($result)){
@@ -138,6 +119,31 @@ function get_products($id_array){
     } finally {
         disconnect_database($conn);
     }
+}
+function get_products_by_id($id_array){
+    $sql = "SELECT * FROM products WHERE";
+    foreach($id_array as $key => $id) {
+        if (substr($sql,-5) == "WHERE"){
+            $sql = $sql .  ' id=' . $id;
+        } else {
+            $sql = $sql . ' OR id=' . $id;
+        }
+    }
+
+    return get_products($sql);
+    
+}
+
+function get_products_top5(){
+    $sql = "SELECT p.id, p.name, p.discription, p.price, p.image_location, SUM(ol.amount) as total
+    FROM products p LEFT JOIN order_line ol ON p.id = ol.product_id 
+    LEFT JOIN orders o ON o.id=ol.order_id 
+    WHERE ADDDATE(o.time, INTERVAL 1 WEEK) >= '".date("Y-m-d") ."' 
+    GROUP BY p.id 
+    ORDER BY total DESC
+    LIMIT 5";
+
+    return get_products($sql);
 }
 
 function save_order($data){

@@ -28,7 +28,7 @@ function get_total_price($products){
 }
 
 function make_menu($data) {
-    $menu = array("home" => "Home", "about" => "About", "contact" => "Contact", "webshop" => "Webshop");
+    $menu = array("home" => "Home", "about" => "About", "contact" => "Contact", "webshop" => "Webshop", "top5" => "Top 5");
     if (isUserLoggedIn()){
         $menu["logout"] = "Loguit " . get_current_user_name();
         $menu["change_password"] = "Wachtwoord veranderen";
@@ -104,14 +104,14 @@ function process_Request($page){
                             $data["page"] = "shoppingcart";
                             $product_ids = get_product_id_from_cart();
                             if ($product_ids != NULL) {
-                                $data['products'] = get_products($product_ids);
+                                $data['products'] = get_products_by_id($product_ids);
                                 $data['total_price'] = get_total_price($data['products']);
                             }
                             break;
                         case "overview":
                             $data["id"] = NULL;
                             $product_ids = array(1,2,3,4,5);
-                            $data['products'] = get_products($product_ids);
+                            $data['products'] = get_products_by_id($product_ids);
                             break;
                     }
                                               
@@ -119,11 +119,11 @@ function process_Request($page){
             } else if (array_key_exists("id", $_GET)) {
                 $data["id"] =  $_GET["id"];
                 $product_ids = array($data["id"]);
-                $data['products'] = get_products($product_ids);
+                $data['products'] = get_products_by_id($product_ids);
             } else {
                 $data["id"] = NULL;
                 $product_ids = array(1,2,3,4,5);
-                $data['products'] = get_products($product_ids);
+                $data['products'] = get_products_by_id($product_ids);
             }
             
                 
@@ -144,10 +144,13 @@ function process_Request($page){
                 $product_ids = array_keys(get_cart());
                 if ($product_ids != NULL) {
                     $data["order"] = $order;
-                    $data['products'] = get_products($product_ids);
+                    $data['products'] = get_products_by_id($product_ids);
                     $data['total_price'] = get_total_price($data['products']);
                 }
             }
+            break;
+        case "top5":
+            $data['products'] = get_products_top5();
             break;
         default:
             $data["page"] = "home";
