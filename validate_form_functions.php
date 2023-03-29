@@ -129,4 +129,9 @@ function validate_cart($data){
     return $data;
 }
 
+function validate_upload($data){
+    $fields = array("title", "discription", "price");
+    $data = validate_input_fields($fields, $data);
+    return $data;
+}
 ?>

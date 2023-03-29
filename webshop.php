@@ -40,7 +40,7 @@ function show_product_in_detail($data){
             cart_button($product->get_id(), "detail", "add", $data);
         }
     }
-    echo '<p>Beschrijving:'. $product->get_discription().'</p>
+    echo '<p>Beschrijving:<br>'. $product->get_discription().'</p>
     </div>';
 }
 

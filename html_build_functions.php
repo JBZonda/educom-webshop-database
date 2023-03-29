@@ -58,9 +58,10 @@ function show_body_end(){
 }
 
 /* show form functions*/
-function show_form_start($div_class, $form_class, $data){
+function show_form_start($div_class, $form_class, $data, $extra_option=""){
     echo '<div class="'.$div_class.'">
-    <form class="'.$form_class.'" method="post" action="\educom-webshop-database/index.php">
+    <form class="'.$form_class.'" method="post" action="\educom-webshop-database/index.php"
+    '.$extra_option.'>
     <span class="error">'; echo get_variable($data,"errors","generic"); echo '</span><br>';
 }
 function show_form_field($field_name, $label, $type, $data, $error_name, $options=NULL){

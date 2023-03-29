@@ -17,7 +17,7 @@ function show_contact_form($data){
     show_form_field("name", "Naam:", "text", $data, "name");
     show_form_field("email", "Email:", "email", $data, "email");
     show_form_field("phone_number", "Telefoonnummer:", "text", $data, "phone_number");
-    show_form_field("comment", "Bericht:", "textarea", $data, "name");
+    show_form_field("comment", "Bericht:", "textarea", $data, "comment");
     show_form_field("com_pref","Selecteer communicatievoorkeur:", "radio", $data, "com_pref", array("Email", "Telefoon"));
     show_form_end("Submit", "contact");
 }
