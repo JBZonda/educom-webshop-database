@@ -27,6 +27,47 @@ function get_total_price($products){
     return $total_price;
 }
 
+function upload_product_image(){
+    $target_dir = "Images/";
+    $file_name = basename($_FILES["image"]["name"]);
+    $target_file = $target_dir . $file_name;
+    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+    // Check if image file is a actual image or fake image
+    $check = getimagesize($_FILES["image"]["tmp_name"]);
+    
+    if($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        
+    } else {
+        throw new Exception ("File is not a valid image");
+        
+    }
+    // Check if file already exists
+    if (file_exists($target_file)) {
+        throw new Exception ("File already exists");
+    }
+
+    // Check file size
+    if ($_FILES["fileToUpload"]["size"] > 2000000) {
+        throw new Exception ("File is too large");
+    }
+
+    // Allow certain file formats
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+    && $imageFileType != "gif" && $imageFileType != "webp" ) {
+        throw new Exception ("Invalid image file type");
+    }
+   
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        return $file_name;
+    } else {
+        return false;
+    }
+    
+
+}
+
 function make_menu($data) {
     $menu = array("home" => "Home", "about" => "About",
     "contact" => "Contact", "webshop" => "Webshop", "top5" => "Top 5");
@@ -159,53 +200,14 @@ function process_Request($page){
             if (is_POST()){
                 $data = validate_upload($data);
                 if (is_valid($data)) {
-                    echo "asdfghj";
-                    $target_dir = "Images/";
-                    $file_name = basename($_FILES["fileToUpload"]["name"]);
-                    $target_file = $target_dir . $file_name;
-                    $uploadOk = 1;
-                    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-                    // Check if image file is a actual image or fake image
-                    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+                    try{
+                        $file_name = upload_product_image();
+                    } catch (Exception $e) {
+                        $data["errors"]["password"] = "Error while uploading image: " . $e;
+                    }
                     
-                    if($check !== false) {
-                        echo "File is an image - " . $check["mime"] . ".";
-                        $uploadOk = 1;
-                    } else {
-                        echo "File is not an image.";
-                        $uploadOk = 0;
-                    }
-                    // Check if file already exists
-                    if (file_exists($target_file)) {
-                        echo "Sorry, file already exists.";
-                        $uploadOk = 0;
-                    }
-                    // Check file size
-                    if ($_FILES["fileToUpload"]["size"] > 500000) {
-                        echo "Sorry, your file is too large.";
-                        $uploadOk = 0;
-                    }
-
-                    // Allow certain file formats
-                    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                    && $imageFileType != "gif" && $imageFileType != "webp" ) {
-                    echo "Sorry, only JPG, JPEG, PNG, WEBP & GIF files are allowed.";
-                    $uploadOk = 0;
-                    }
-                    // Check if $uploadOk is set to 0 by an error
-                    if ($uploadOk == 0) {
-                        echo "Sorry, your file was not uploaded.";
-                    // if everything is ok, try to upload file
-                    } else {
-                        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-                        echo "The file ". htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
-                        } else {
-                        echo "Sorry, there was an error uploading your file.";
-                        }
-                    }
-                    echo $file_name;
-                    #$product = new Product(NULL,$data["title"],$data["description"],$file_name ,$data["price"]);
-                    #save_product($product);
+                    $product = new Product(NULL,$data["title"],$data["description"],$file_name ,$data["price"]);
+                    save_product($product);
 
                 }
 
